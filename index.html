@@ -1,315 +1,161 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Diwali Greeting</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            background: radial-gradient(circle at top, #ffeb3b, #ff9800, #e65100);
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-        
-        /* GIF Image */
-        #laxmiImage {
-            max-width: 80%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 25px gold, 0 0 50px orange;
-            animation: glow 2s infinite alternate;
-            position: relative;
-            z-index: 10;
-            margin-top: 50px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Click Task</title>
 
-        @keyframes glow {
-            from { box-shadow: 0 0 15px gold, 0 0 30px orange; }
-            to { box-shadow: 0 0 35px gold, 0 0 70px orange; }
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-        /* Input Section */
-        #inputSection {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 30;
-            width: 100%;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #020617, #1e1b4b, #312e81);
+    }
 
-        input[type="text"] {
-            padding: 10px;
-            width: 250px;
-            font-size: 16px;
-            border: 2px solid #ffeb3b;
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      padding: 35px 25px;
+      text-align: center;
+      border-radius: 24px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 25px 60px rgba(0,0,0,.45);
+    }
 
-        #shareNote {
-            font-size: 14px;
-            color: #000;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: block;
-        }
+    .icon {
+      font-size: 42px;
+      margin-bottom: 18px;
+    }
 
-        #whatsappButton {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #25D366;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 0 auto;
-        }
+    h1 {
+      color: #fff;
+      font-size: 27px;
+      margin-bottom: 12px;
+    }
 
-        #whatsappButton:hover {
-            background-color: #128C7E;
-        }
+    p {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
 
-        /* Message */
-        .message {
-            margin-top: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            text-shadow: 0 0 15px #fff, 0 0 30px #ff5722, 0 0 50px #ffc107;
-            animation: fadeIn 1s ease forwards;
-            position: relative;
-            z-index: 20;
-        }
+    #clickBtn {
+      width: 100%;
+      padding: 17px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+      color: #fff;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: .2s;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
+    #clickBtn:active {
+      transform: scale(.97);
+    }
 
-        /* Fireworks canvas */
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 5;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
+    #clickBtn:disabled {
+      background: #374151;
+      color: #9ca3af;
+      cursor: not-allowed;
+    }
 
-        /* Advertisement Overlay */
-        #adOverlay {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 50; /* সর্বোচ্চ লেয়ার */
-            background: transparent;
-        }
-        
-        /* Additional Advertisement Placements */
-        .ad-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 10px auto;
-            z-index: 50;
-            position: relative;
-        }
-        
-        #adAboveName {
-            margin-bottom: 15px;
-        }
-        
-        #adBelowWhatsapp {
-            margin-top: 15px;
-        }
-    </style>
+    #success {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 14px;
+      color: #86efac;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.3);
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Top Advertisement Overlay -->
-    <div id="adOverlay">
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'a5725227d9a13cbcaa7c3fe7797de9f1',
-                'format' : 'iframe',
-                'height' : 50,
-                'width' : 320,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/a5725227d9a13cbcaa7c3fe7797de9f1/invoke.js"></script>
+
+  <div class="card">
+
+    <div class="icon">👆</div>
+
+    <h1>একবার ক্লিক করুন</h1>
+
+    <p>
+     নিচের বাটনে দুইবার কি তিনবার ক্লিক করা লাগতে পারে একদম সহজ কাজ এত সহজ কাজ এখন পর্যন্ত আর হয়নি কোন অ্যাড আসলে ভিতর থেকে ঘুরে আসবেন যদি ভুলেও ইন্সটল করে থাকেন ওপেন করবেন না।
+    </p>
+
+    <button id="clickBtn" type="button">
+      CLICK HERE
+    </button>
+<script async="async" data-cfasync="false" src="https://pl30742970.effectivecpmnetwork.com/dc4530ba3390a59edc8e1d7a5d5d3358/invoke.js"></script>
+<div id="container-dc4530ba3390a59edc8e1d7a5d5d3358"></div>
+
+    <div id="success">
+      ✅ কাজ সফলভাবে সম্পন্ন হয়েছে!
     </div>
 
-    <img id="laxmiImage" src="1axmi.gif" alt="Laxmi Animation">
+  </div>
 
-    <div id="inputSection">
-        <!-- Advertisement above name input -->
-        <div id="adAboveName" class="ad-container">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : 'a5725227d9a13cbcaa7c3fe7797de9f1',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/a5725227d9a13cbcaa7c3fe7797de9f1/invoke.js"></script>
-        </div>
-        
-        <input type="text" id="nameInput" placeholder="তোমার নাম লিখো">
-        <div id="shareNote">যত বেশি শেয়ার, তত বেশি বক্স খোলার সম্ভাবনা। মিনিমাম ৫ জন।</div>
-        <button id="whatsappButton" onclick="shareWhatsApp()">
-            <img src="https://img.icons8.com/color/24/000000/whatsapp--v1.png"/>
-            বক্স খুলতে চাইলে শেয়ার করুন
-        </button>
-        
-        <!-- Advertisement below WhatsApp button -->
-        <div id="adBelowWhatsapp" class="ad-container">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : 'a5725227d9a13cbcaa7c3fe7797de9f1',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/a5725227d9a13cbcaa7c3fe7797de9f1/invoke.js"></script>
-        </div>
-    </div>
+  <!-- প্রথম বিজ্ঞাপনের স্ক্রিপ্ট -->
+  <script src="https://pl30742972.effectivecpmnetwork.com/99/d8/99/99d899bef6d7fd04276f04e29f36d0ef.js"></script>
 
-    <div id="message" class="message"></div>
-    <canvas id="fireworksCanvas"></canvas>
+  <script>
+    const button = document.getElementById("clickBtn");
+    const success = document.getElementById("success");
 
-    <script>
-        // URL থেকে নাম চেক করা
-        function getNameFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('name');
+    let clickCount = 0;
+    let secondAdLoaded = false;
+
+    button.addEventListener("click", function () {
+
+      clickCount++;
+
+      // প্রথম ক্লিক
+      if (clickCount === 1) {
+
+        // দ্বিতীয় বিজ্ঞাপনের স্ক্রিপ্ট লোড
+        if (!secondAdLoaded) {
+
+          const adScript = document.createElement("script");
+
+          adScript.src =
+            "https://pl30921057.effectivecpmnetwork.com/95/2a/4f/952a4f8c0ef40f547213fbbdb089f31d.js";
+
+          adScript.async = true;
+
+          document.body.appendChild(adScript);
+
+          secondAdLoaded = true;
         }
 
-        // WhatsApp শেয়ার ফাংশন
-        function shareWhatsApp() {
-            const name = document.getElementById('nameInput').value.trim();
-            if(name === '') {
-                alert('দয়া করে একটি নাম লিখুন!');
-                return;
-            }
-            const link = window.location.origin + window.location.pathname + '?name=' + encodeURIComponent(name);
-            const whatsappURL = `https://wa.me/?text=${encodeURIComponent("Happy Diwali from " + name + " 🎆 " + link)}`;
-            window.open(whatsappURL, '_blank');
-        }
+        button.textContent = "CLICK AGAIN";
+      }
 
-        // Fireworks
-        const canvas = document.getElementById('fireworksCanvas');
-        const ctx = canvas.getContext('2d');
-        let cw = canvas.width = window.innerWidth;
-        let ch = canvas.height = window.innerHeight;
+      // দ্বিতীয় ক্লিক
+      else if (clickCount === 2) {
 
-        window.addEventListener('resize', () => {
-            cw = canvas.width = window.innerWidth;
-            ch = canvas.height = window.innerHeight;
-        });
+        button.textContent = "COMPLETED ✓";
+        button.disabled = true;
 
-        class Firework {
-            constructor(){
-                this.x = Math.random()*cw;
-                this.y = ch + Math.random()*100;
-                this.targetY = Math.random()*ch/2;
-                this.speed = Math.random()*3 + 2;
-                this.particles = [];
-                this.exploded = false;
-                this.color = `hsl(${Math.random()*360},100%,50%)`;
-            }
-            update(){
-                if(this.y > this.targetY && !this.exploded){
-                    this.y -= this.speed;
-                } else if(!this.exploded){
-                    this.explode();
-                }
-                this.particles.forEach(p => p.update());
-                this.particles = this.particles.filter(p => !p.done);
-            }
-            draw(){
-                if(!this.exploded){
-                    ctx.beginPath();
-                    ctx.arc(this.x,this.y,2,0,Math.PI*2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-                this.particles.forEach(p => p.draw());
-            }
-            explode(){
-                for(let i=0;i<50;i++){
-                    this.particles.push(new Particle(this.x,this.y,this.color));
-                }
-                this.exploded = true;
-            }
-        }
+        success.style.display = "block";
+      }
 
-        class Particle {
-            constructor(x,y,color){
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                this.velX = (Math.random()-0.5)*5;
-                this.velY = (Math.random()-0.5)*5;
-                this.alpha = 1;
-                this.gravity = 0.05;
-                this.done = false;
-            }
-            update(){
-                this.x += this.velX;
-                this.y += this.velY;
-                this.velY += this.gravity;
-                this.alpha -= 0.02;
-                if(this.alpha <= 0) this.done = true;
-            }
-            draw(){
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x,this.y,2,0,Math.PI*2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        let fireworks = [];
-        function animate(){
-            ctx.fillStyle = "rgba(0,0,0,0.1)";
-            ctx.fillRect(0,0,cw,ch);
-            for(let i=0;i<3;i++){
-                if(Math.random()<0.05) fireworks.push(new Firework());
-            }
-            fireworks.forEach(fw => { fw.update(); fw.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // URL নাম থাকলে দেখানো
-        window.onload = function() {
-            const name = getNameFromURL();
-            if(name) {
-                document.getElementById('inputSection').style.display = 'none';
-                document.getElementById('message').innerHTML = `Happy Diwali from ${decodeURIComponent(name)}! 🎆`;
-            }
-        }
-    </script>
+    });
+  </script>
 </body>
 </html>
